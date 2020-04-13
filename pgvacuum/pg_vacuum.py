@@ -12,7 +12,7 @@ from prettytable import PrettyTable  # Pretty table output
 
 import os
 
-VERSION = "0.1-alpha1"
+VERSION = "0.1-alpha2"
 
 __author__ = "lev.kokotov@instacart.com"
 __version__ = VERSION
@@ -124,13 +124,14 @@ def kill_autovacuum(conn, pid):
     # This will terminate the PID only if it's a vacuum/autovacuum.
     query = """
     SELECT pg_terminate_backend(pid)
+    FROM pg_stat_activity
     WHERE (
-        query LIKE 'autovacuum:%'
+        query LIKE 'autovacuum:%%'
         OR
-        query ILIKE 'VACUUM%'
+        query ILIKE 'VACUUM%%'
     ) AND pid = %s
     """
-    done = _exec(query, (pid,)).fetchone()
+    done = _exec(conn, query, (pid,)).fetchone()
 
     if done is None:
         _error2("No vacuum/autovacuum with PID={} running.".format(pid))
