@@ -105,6 +105,7 @@ def show_vacuum(conn):
         NOW() - query_start AS duration
     FROM pg_stat_activity
     WHERE query LIKE 'autovacuum:%' OR query ILIKE 'VACUUM%'
+    AND state != 'idle'
     """
     rows = _exec(conn, query).fetchall()
     if not rows:
