@@ -40,8 +40,10 @@ $ pgvacuum --database=postgres://localhost/db --progress
 ### Enable/disable autovacuum on a table
 
 ```bash
-# Enable the vacuum
+# Disable the autovacuum on this table
 $ pgvacuum --database=postgres://localhost/db --table=my_table --disable
+
+# Enable the autovacuum on this table
 $ pgvacuum --database=postgres://localhost/db --table=my_table --enable
 ```
 
