@@ -12,7 +12,7 @@ from prettytable import PrettyTable  # Pretty table output
 
 import os
 
-VERSION = "0.1-alpha6"
+VERSION = "0.1-alpha7"
 
 __author__ = "lev.kokotov@instacart.com"
 __version__ = VERSION
@@ -142,8 +142,13 @@ def kill_autovacuum(conn, pid):
 
 def show_table_options(conn, table):
     query = """
-    SELECT relname, reloptions FROM pg_class WHERE relname = %s;
+    SELECT relname, reloptions
+    FROM pg_class WHERE relname = %s
+    AND relkind = 'r';
     """
+    # relkind:
+    # r = ordinary table, i = index, S = sequence, v = view, m = materialized view, c = composite type, t = TOAST table, f = foreign table
+    # https://www.postgresql.org/docs/9.3/catalog-pg-class.html
     settings = _exec(conn, query, (table,)).fetchone()
     if not settings:
         _error2('Table "{}" does not exist.'.format(table))
