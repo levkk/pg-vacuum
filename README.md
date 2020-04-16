@@ -1,10 +1,7 @@
 # pg-vacuum
-Managing PostgreSQL vacuums/autovacuums.
+Managing PostgreSQL vacuums/autovacuums. This little tool will hopefully make managing the craziness that Postgres autovacuum is a little easier.
 
 ## Features
-
-This little tool will hopefully make managing the craziness that Postgres autovacuum is a little easier.
-
 
 ### Show current vacuums/autovacuums
 It will show you how long the vacuums are running for and how much is left to do.
