@@ -83,7 +83,7 @@ def show_progress(conn):
         (NOW() - query_start) AS duration
     FROM pg_stat_progress_vacuum
     INNER JOIN pg_class
-        ON pg_class.oid = pg_stat_progress_vacuum.datid
+        ON pg_class.oid = pg_stat_progress_vacuum.relid
     INNER JOIN pg_stat_activity
         ON pg_stat_activity.pid = pg_stat_progress_vacuum.pid
     """
