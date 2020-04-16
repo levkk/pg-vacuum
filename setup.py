@@ -19,6 +19,7 @@ setuptools.setup(
         "prettytable>=0.7.2",
         "psycopg2>=2.8.4",
     ],
+    packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.0",
         "License :: OSI Approved :: MIT License",
