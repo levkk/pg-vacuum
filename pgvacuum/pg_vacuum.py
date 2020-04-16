@@ -149,7 +149,10 @@ def show_table_options(conn, table):
         _error2('Table "{}" does not exist.'.format(table))
     else:
         opts = settings["reloptions"]
-        _result2(_table(["Setting", "Value"], map(lambda x: x.split("="), opts)))
+        if opts:
+            _result2(_table(["Setting", "Value"], map(lambda x: x.split("="), opts)))
+        else:
+            _result2('Table "{}" has no explicit options set on it.'.format(table))
 
 
 def table_autovacuum(conn, table, enable):
