@@ -100,5 +100,6 @@ where `1234` is the PID of the vacuum/autovacuum process.
 2. `--progress`, show the progress of running vacuums,
 3. `--table`, show settings for this table,
 4. `--enable/disable`, to be used in conjunction with `--table` to enable/disable autovacuum on it,
-5. `--kill`, kill the autovacuum/vacuum with this PID.
+5. `--kill`, kill the autovacuum/vacuum with this PID,
+6. `--settings`, show settings for the database.
 

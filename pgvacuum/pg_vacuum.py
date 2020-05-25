@@ -12,7 +12,7 @@ from prettytable import PrettyTable  # Pretty table output
 
 import os
 
-VERSION = "0.1-alpha9"
+VERSION = "0.1-alpha10"
 
 __author__ = "lev.kokotov@instacart.com"
 __version__ = VERSION
