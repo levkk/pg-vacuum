@@ -63,6 +63,27 @@ $ pgvacuum --database=postgres://localhost/db --table=my_table
 +--------------------------------+-----------+
 ```
 
+### Show current autovacuum settings
+
+Show current database autovacuum settings.
+
+```bash
+pgvacuum --database=postgres://localhost/src --settings
+
++---------------------------------+-----------+
+|             Setting             |   Value   |
++---------------------------------+-----------+
+|   autovacuum_vacuum_cost_delay  |    2ms    |
+|   autovacuum_vacuum_cost_limit  |    200    |
+|        autovacuum_naptime       |    1min   |
+|  autovacuum_vacuum_scale_factor |    0.2    |
+| autovacuum_analyze_scale_factor |    0.1    |
+|    autovacuum_freeze_max_age    | 200000000 |
+|           track_counts          |     on    |
++---------------------------------+-----------+
+```
+
+
 ### Terminate the autovacuums
 
 Ok, you've had enough of it.
