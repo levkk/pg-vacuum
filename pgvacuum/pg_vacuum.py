@@ -12,7 +12,7 @@ from prettytable import PrettyTable  # Pretty table output
 
 import os
 
-VERSION = "0.1-alpha8"
+VERSION = "0.1-alpha9"
 
 __author__ = "lev.kokotov@instacart.com"
 __version__ = VERSION
@@ -160,6 +160,39 @@ def show_table_options(conn, table):
             _result2('Table "{}" has no explicit options set on it.'.format(table))
 
 
+def show_settings(conn):
+    """Show autovacuum settings, including default vacuum settings."""
+    # If any of autovacuum settings below are -1, the vacuum settings are used.
+    autovacuum_vacuum_settings = {
+        "autovacuum_vacuum_cost_delay": "vacuum_cost_delay",
+        "autovacuum_vacuum_cost_limit": "vacuum_cost_limit",
+    }
+
+    # These settings are used as set.
+    autovacuum_settings = [
+        "autovacuum_naptime",
+        "autovacuum_vacuum_scale_factor",
+        "autovacuum_analyze_scale_factor",
+        "autovacuum_freeze_max_age",
+        "track_counts",  # If this is off, autovacuum statistics collection won't work.
+    ]
+
+    query = "SHOW {}"
+    result = {}
+
+    for key, value in autovacuum_vacuum_settings.items():
+        autovacuum_setting = _exec(conn, query.format(key)).fetchone()[key]
+        if autovacuum_setting == "-1":
+            autovacuum_setting = _exec(conn, query.format(value)).fetchone()[value]
+        result[key] = autovacuum_setting
+
+    for setting in autovacuum_settings:
+        autovacuum_setting = _exec(conn, query.format(setting)).fetchone()[setting]
+        result[setting] = autovacuum_setting
+
+    _result2(_table(["Setting", "Value"], list(result.items())))
+
+
 def table_autovacuum(conn, table, enable):
     """Enable or disable autovacuum on a particular table."""
     query = """
@@ -198,7 +231,13 @@ def table_autovacuum(conn, table, enable):
     default=None,
     help="Enable/disable autovacuum.",
 )
-def cli(database, kill, progress, debug, table, enable):
+@click.option(
+    "--settings/--no-settings",
+    required=False,
+    default=None,
+    help="Show database autovacuum settings.",
+)
+def cli(database, kill, progress, debug, table, enable, settings):
     conn = psycopg2.connect(database, connect_timeout=5)
     cursor = conn.cursor(cursor_factory=DictCursor)
 
@@ -207,6 +246,8 @@ def cli(database, kill, progress, debug, table, enable):
             os.environ["DEBUG"] = "True"
         if kill:
             kill_autovacuum(cursor, kill)
+        elif settings:
+            show_settings(cursor)
         elif progress:
             show_progress(cursor)
         elif table is not None and enable is None:
