@@ -63,7 +63,7 @@ $ pgvacuum --database=postgres://localhost/db --table=my_table
 +--------------------------------+-----------+
 ```
 
-### Show current autovacuum settings
+### Show autovacuum settings
 
 Show current database autovacuum settings.
 
